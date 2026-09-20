@@ -43,6 +43,7 @@ No external API, LLM service, or API key is needed to run this notebook.
 4. **Filter and rank.** Excludes sold-out flights and ranks the rest by price.
 5. **Operational update.** Sells 10 seats on a real flight (PA1002), saves the new seat count with a parameterized `UPDATE`, and shows the resulting fare increase.
 6. **Edge case.** Attempts to sell a seat on the already sold-out PA1007 and shows it is rejected.
+7. **Interactive Booking System.(Live)** A command-line `while` loop interface that fetches live data directly from the SQLite database. It prompts the user for a destination, displays dynamic prices, and allows a ticket purchase that immediately decreases capacity in the database. Incorporates a session timeout mechanism. Have a reset function at the end for reproducing the results.
 
 ## Pricing logic
 
@@ -62,7 +63,7 @@ Higher occupancy raises the capacity factor; a shorter booking window raises the
 
 ## Course concepts used
 
-- Functions: `get_time_factor`.
+- Modularity & Functions: Heavily refactored into reusable helper functions (`update_db_seats`, `load_flights_db`) to eliminate code duplication (DRY principle).
 - A `Flight` class: validates its inputs, computes `load_factor` and price, updates seats, and converts itself to a dictionary with `to_dict()`.
 - Dictionaries and loops: validating and inserting CSV records one at a time through the `Flight` class.
 - SQLite: an explicit `CREATE TABLE` schema, a `cursor` object, and parameterized `INSERT`/`SELECT`/`UPDATE`/`DELETE` with explicit `commit()`/`close()` — no SQL strings built from input.
