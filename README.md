@@ -12,7 +12,7 @@ Two passengers booking the same flight can see different fares because they book
 
 | File | Purpose |
 | --- | --- |
-| `potter_airlines.ipynb` | Complete notebook: `Flight` class and single-flight demo, SQLite persistence, and vectorized batch pricing/search/update. |
+| `potter_airlines.ipynb` | Main runnable notebook: pricing helpers, `Flight` class, SQLite persistence, vectorized pricing, validation, and an interactive booking workflow. |
 | `potter_airlines.db` | SQLite database created and rebuilt by the notebook. |
 | `flights.csv` | Twenty fictional flights used as the input dataset. Fares are in Canadian dollars (CAD). |
 | `Potter_Airlines_Project_Specification.docx` | Assignment requirements. |
@@ -31,7 +31,9 @@ The CSV includes flight identifiers, origins, destinations, departure dates, bas
    ```
 
 4. Keep `flights.csv` in the same folder as `potter_airlines.ipynb`, and run the notebook with that folder as the working directory.
-5. Restart the kernel and run all cells from top to bottom. Every cell runs cleanly in sequence; the SQLite section rebuilds `potter_airlines.db` from the CSV each run, so results are reproducible.
+5. Restart the kernel and run all cells from top to bottom. The non-interactive workflow runs cleanly in sequence; the SQLite setup rebuilds `potter_airlines.db` from the CSV so the demonstration is reproducible.
+6. To use the command-line booking demo, remove the `#` from `# run_interactive_booking()` and run that cell manually.
+7. To discard booking changes and restore the original CSV data, remove the `#` from `# reset_database_to_initial_state()` and run the reset cell manually.
 
 No external API, LLM service, or API key is needed to run this notebook.
 
@@ -43,7 +45,8 @@ No external API, LLM service, or API key is needed to run this notebook.
 4. **Filter and rank.** Excludes sold-out flights and ranks the rest by price.
 5. **Operational update.** Sells 10 seats on a real flight (PA1002), saves the new seat count with a parameterized `UPDATE`, and shows the resulting fare increase.
 6. **Edge case.** Attempts to sell a seat on the already sold-out PA1007 and shows it is rejected.
-7. **Interactive Booking System.(Live)** A command-line `while` loop interface that fetches live data directly from the SQLite database. It prompts the user for a destination, displays dynamic prices, and allows a ticket purchase that immediately decreases capacity in the database. Incorporates a session timeout mechanism. Have a reset function at the end for reproducing the results.
+7. **Interactive booking system.** A command-line `while` loop fetches current data from SQLite, prompts for a destination, displays available flights and dynamic prices, and books one ticket by reducing `seats_remaining` in the database.
+8. **Manual reset.** A separate reset function rebuilds the database from `flights.csv` when the group wants to start a fresh demonstration. It is not called automatically, so a completed booking remains saved until the reset is run deliberately.
 
 ## Pricing logic
 
@@ -74,6 +77,7 @@ Higher occupancy raises the capacity factor; a shorter booking window raises the
 
 - The `Flight` constructor rejects non-positive capacity, out-of-range seats, non-positive fares, and non-positive demand/seasonal factors (see the rejected-flight demo).
 - `update_seats` rejects a change that would take seats outside `0..capacity`.
+- `update_db_seats` rejects an unknown flight ID and prevents the database from storing a remaining-seat value outside `0..capacity`.
 - The batch-pricing table is checked for missing values, unique flight IDs, valid ranges, and positive factors before any price is calculated.
 - Already-departed flights (relative to the fixed quote date) are excluded from pricing and printed.
 - Sold-out flights are excluded from ranked results, and selling a seat on one is explicitly rejected.
@@ -86,3 +90,4 @@ The dataset is fictional. Pricing multipliers are transparent teaching assumptio
 ## Remaining work
 
 - Record the 4-5 minute demonstration: run the system, explain a pricing decision, walk through meaningful code, and show the checked edge case.
+- Complete the final group review and submit the notebook, data/database files, README, and recording through the course channel.
