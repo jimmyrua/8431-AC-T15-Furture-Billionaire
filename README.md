@@ -45,7 +45,7 @@ No external API, LLM service, or API key is needed to run this notebook.
 4. **Filter and rank.** Excludes sold-out flights and ranks the rest by price.
 5. **Operational update.** Sells 10 seats on a real flight (PA1002), saves the new seat count with a parameterized `UPDATE`, and shows the resulting fare increase.
 6. **Edge case.** Attempts to sell a seat on the already sold-out PA1007 and shows it is rejected.
-7. **Interactive booking system.** A command-line `while` loop fetches current data from SQLite, prompts for a destination, displays available flights and dynamic prices, and books one ticket by reducing `seats_remaining` in the database.
+7. **Interactive booking system.** A command-line `while` loop fetches current data from SQLite, prompts for a destination and flight, asks how many tickets to purchase, and reduces `seats_remaining` by the validated quantity.
 8. **Manual reset.** A separate reset function rebuilds the database from `flights.csv` when the group wants to start a fresh demonstration. It is not called automatically, so a completed booking remains saved until the reset is run deliberately.
 
 ## Pricing logic
@@ -81,6 +81,7 @@ Higher occupancy raises the capacity factor; a shorter booking window raises the
 - The batch-pricing table is checked for missing values, unique flight IDs, valid ranges, and positive factors before any price is calculated.
 - Already-departed flights (relative to the fixed quote date) are excluded from pricing and printed.
 - Sold-out flights are excluded from ranked results, and selling a seat on one is explicitly rejected.
+- Interactive bookings accept only positive whole-number ticket quantities and reject requests that exceed the selected flight's remaining seats.
 - Every computed fare, single-flight and batch, is asserted to fall within CAD 45–1,500.
 
 ## Limitations
