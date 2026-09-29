@@ -1,13 +1,13 @@
 # Final Project WBS and Progress
 
-Progress snapshot: September 25, 2026. Current repository work is implemented and locally verified; the recording, group review, and final submission remain.
+Progress snapshot: September 29, 2026. Current repository work is implemented and locally verified; the recording, group review, and final submission remain.
 
 ## Status and Evidence
 
 - `[x]`: present in the saved project and checked locally.
 - `[ ]`: still requires group action or submission evidence.
 
-The saved notebook contains 19 code cells. An isolated top-to-bottom execution completed with no error outputs. A separate multi-ticket booking check rejected text, zero, and over-capacity quantities before reducing PA1002 from 80 to 78 seats in a test database. The tracked database remains valid with 20 flight records.
+The saved notebook contains 20 code cells. The regression suite executes these cells in temporary folders and checks booking persistence, current-inventory deductions, failed-reset rollback, numeric validation, pricing, and interactive flows. Run `python -m unittest discover -s tests -v` to reproduce the checks. The existing project database is not used for test writes.
 
 ## Scope Sources
 
@@ -37,19 +37,19 @@ The saved notebook contains 19 code cells. An isolated top-to-bottom execution c
 
 - [x] **1.4.1 Flight database schema** — an explicit `CREATE TABLE` schema stores the required flight fields and can be rebuilt from the CSV. Sources: S1, R4.
 - [x] **1.4.2 Parameterized CRUD operations** — the notebook demonstrates parameterized INSERT, SELECT, UPDATE, and DELETE with read-back assertions. Sources: S1, R1, R4.
-- [x] **1.4.3 Safe seat persistence** — database updates reject unknown flight IDs and remaining-seat values outside `0..capacity`. Sources: S1, R5.
+- [x] **1.4.3 Safe seat persistence** — database updates reject unknown flight IDs, non-integer counts, and remaining-seat values outside `0..capacity`; sales deduct from current inventory within a transaction. Sources: S1, R5.
 
 ### 1.5 Flight Search and User Workflow
 
 - [x] **1.5.1 Filtered and ranked results** — sold-out flights are removed and available flights are ranked by final price. Sources: S1, R1.
 - [x] **1.5.2 Interactive booking workflow** — the user can choose a destination and flight, view current prices, select a valid number of tickets, and persist the new seat count to SQLite. Sources: S1, R1.
-- [x] **1.5.3 Reproducible manual reset** — the reset function restores the database from `flights.csv` only when deliberately called. Sources: S1, R6.
+- [x] **1.5.3 Reproducible manual reset** — the reset function restores the database from `flights.csv` only when deliberately called; validation and transactional rollback protect previous data on failure. Sources: S1, R6.
 
 ### 1.6 Validation and Reproducibility
 
 - [x] **1.6.1 Input and edge-case checks** — the notebook checks capacity, seat range, base fare, positive factors, negative departure intervals, missing data, duplicate flight IDs, invalid database updates, sold-out booking attempts, and invalid or over-capacity ticket quantities. Sources: S1, R5.
 - [x] **1.6.2 Fare assertions and checked evidence** — fare bounds are asserted, object and vectorized prices are reconciled, and database updates are read back and verified. Sources: S1, R5.
-- [x] **1.6.3 Runnable and readable notebook** — the notebook is organized into six numbered sections and completed an isolated top-to-bottom execution with no error outputs. Interactive booking and reset are manual so `Run All` does not wait for input or erase booking changes. Sources: S1, S2, R1, R6.
+- [x] **1.6.3 Runnable and readable notebook** — the notebook is organized into six numbered sections and completed an isolated top-to-bottom execution with no error outputs. Interactive booking, the seat-sale demonstration, and reset are manual. Initialization preserves an existing flights table, so `Run All` does not wait for input or erase booking changes. Sources: S1, S2, R1, R6.
 
 ### 1.7 Submission Documentation and Demonstration
 
@@ -63,7 +63,7 @@ The saved notebook contains 19 code cells. An isolated top-to-bottom execution c
 - Website, GUI, authentication, deployment, advanced ML/optimization, dashboards, and LLM/API features remain outside the required scope.
 - `flights.csv` is the reproducible initial data source; `potter_airlines.db` is the persistent store; `potter_airlines.ipynb` contains the processing and user workflow.
 - The fixed quote date (`2026-09-19`) and CAD 45–1,500 bounds are documented project choices used consistently.
-- The booking and reset calls remain commented by default. They are run manually because one waits for user input and the other intentionally discards saved booking changes.
+- The booking, seat-sale demonstration, and reset calls remain commented by default. Run All preserves current inventory. Explicit reset restores CSV data, with rollback if rebuilding fails.
 
 ## Requirement Coverage Review
 
