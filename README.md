@@ -90,11 +90,6 @@ Higher occupancy raises the capacity factor; a shorter booking window raises the
 
 The dataset is fictional. Pricing multipliers are transparent teaching assumptions, not estimates fitted to real demand. The model does not optimize revenue or simulate real bookings. The quote date is fixed (2026-09-19) so results are reproducible; change it in the "Prepare dates and check the table" cell to see different flights included or excluded. This is a single-user notebook with no authentication, GUI, or deployment - all out of scope per the assignment. No LLM/API enhancement is included.
 
-## Remaining work
-
-- Record the 4-5 minute demonstration: run the system, explain a pricing decision, walk through meaningful code, and show the checked edge case.
-- Complete the final group review and submit the notebook, data/database files, README, and recording through the course channel.
-
 ## Regression tests
 
 From this folder, using the same Python environment as the notebook:
